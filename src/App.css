@@ -1,30 +1,39 @@
-.App {
+/*.user-select-canvas {
+	display: flex;
+	flex-wrap: wrap;
+}*/
+
+/*.user-feedback-canvas {
+
+}
+
+.user-select img, .user-feedback img {
+	width: 300px;
+}
+.user-select, .user-feedback{
+	width: 300px;
+	margin: 5px;
+	padding: 5px;
 	text-align: center;
 }
 
-.App-logo {
-	animation: App-logo-spin infinite 20s linear;
-	height: 80px;
+.user-feedback-lower {
+	display: flex;
+	align-items: center;
 }
 
-.App-header {
-	background-color: #222;
-	height: 150px;
-	padding: 20px;
-	color: white;
-}
+.user-feedback-lower-input {
 
-.App-intro {
-	font-size: large;
-}
+}*/
 
 .user-selected {
-	background-color: red;
+	background-color: CadetBlue ;
 }
 .user-notselected {
-	background-color: blue;
 }
 @keyframes App-logo-spin {
 	from { transform: rotate(0deg); }
 	to { transform: rotate(360deg); }
 }
+
+.card-content{text-align: center}
