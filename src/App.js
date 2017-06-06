@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {observable, action} from 'mobx';
+import {observable} from 'mobx';
 import {observer} from 'mobx-react';
 import logo from './logo.svg';
 import './App.css';
@@ -10,7 +10,7 @@ const testData = [
 ]
 
 const fetchUsers = new Promise ((resolve, reject) => {
-	resolve(testData);
+	setTimeout(	() => {resolve(testData)}, 2000)
 });
 
 class User {
@@ -22,10 +22,10 @@ class User {
 }
 
 const appState = observable({
-	users: {
-		@observable loaded: false,
+	users: observable({
+		loaded: false,
 		data: [],
-	}
+	})
 })
 appState.loadUser = function(x) {
 
@@ -34,12 +34,11 @@ appState.loadUser = function(x) {
 appState.getAllUsers = function() {
 	fetchUsers.then(x=> {
 		console.log(x)
-		x.forEach(y=> {
+		x.forEach(y => {
 			this.users.data.push(new User(y.id, y.name, y.pic))
 		})
-		this.loaded = true;
+		this.users.loaded = true;
 	})
-	console.log('yap', this)
 }
 
 @observer class App extends Component {
@@ -51,15 +50,15 @@ appState.getAllUsers = function() {
 		appState.getAllUsers();
 	}
 	render() {
-		console.log('jam', appState.users);
-
 		return (
 			<div className="App">
 				<div className="App-header">
 					<img src={logo} className="App-logo" alt="logo" />
-					{appState.users.loaded ?
-						appState.users.data.map(x=> {return <li>{x.name}</li>}) :
-						'loading'
+					{
+						console.log(appState.users.loaded)
+					}
+					{
+						appState.users.loaded ? appState.users.data.map(x=> {return <li>{x.name}</li>}) : 'loading...'
 					}
 				</div>
 				<button onClick={() => this.loadUser('tom')}>INCREASE</button>
