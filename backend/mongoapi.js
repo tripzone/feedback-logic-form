@@ -29,8 +29,8 @@ var portListen = 5011;
 var rootApi = 'feedback'
 var dbName = 'distinction17'
 
-app.get('/iveyall', iveyAll);
-// app.get('/iveyselect', iveySelect);
+app.get('/queens', queens);
+app.get('/ivey', ivey);
 app.get('/'+rootApi, findAll);
 app.post('/'+rootApi , adddata);
 app.delete('/'+rootApi+'/:id', deletedata);
@@ -104,10 +104,17 @@ function deletedata (req, res) {
 		}
 }
 
-function iveyAll (req, res) {
+function queens (req, res) {
+		console.log('getting all queens names:');
+		var picPath = '/pics-queens/';
+		payload = readFile('../public/queens.csv', picPath)
+		res.send(payload);
+};
+
+function ivey (req, res) {
 		console.log('getting all ivey names:');
-		var picPath = 'http://localhost:5011/public/pics-queens/';
-		payload = readFile('../public/queensall.csv', picPath)
+		var picPath = '/pics-ivey/';
+		payload = readFile('../public/ivey.csv', picPath)
 		res.send(payload);
 };
 

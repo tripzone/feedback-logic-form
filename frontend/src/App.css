@@ -29,10 +29,12 @@
 .user-selected {
 	background-color: CadetBlue ;
 }
-.user-notselected {
+.card-content {
+	height: 80px;
 }
-
-
+.card {
+	cursor: pointer;
+}
 
 @keyframes App-logo-spin {
 	from { transform: rotate(0deg); }

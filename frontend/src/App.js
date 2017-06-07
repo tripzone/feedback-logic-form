@@ -4,19 +4,22 @@ import {observer} from 'mobx-react';
 import fetch from 'isomorphic-fetch'
 import './App.css';
 
-const testData = [
-	{name: 'ali', id:1, pic:'pics/35.jpg'},
-	{name: 'mamad taghi moradizadeh', id:2, pic:'pics/39.jpg'},
-	{name: 'lucy', id:3, pic:'pics/55.jpg'},
-]
+const serverLink = 'http://localhost:5011';
+const picPath = serverLink+'/public/'
 
-const fetchUsers = new Promise ((resolve, reject) => {
-	setTimeout(	() => {resolve(testData)}, 200)
-});
+
+const fetchUsers = (apiLink) => {
+	return new Promise ((resolve, reject) => {
+		fetch(serverLink+apiLink, {
+			method: 'GET',
+		}).then((x)=>resolve(x.json()))
+			.catch((x)=>reject(null))
+	});
+}
+
 class User {
 	@observable selected = false;
 	@observable comment = '';
-
 	constructor(id, name, pic) {
 		this.id = id;
 		this.name = name;
@@ -30,10 +33,11 @@ const appState = observable({
 	}),
 	stage: 'selection'
 })
-appState.getAllUsers = function() {
-	fetchUsers.then(x=> {
+appState.getAllUsers = function(school) {
+	fetchUsers(school).then(x=> {
 		x.forEach(y => {
-			this.users.data.push(new User(y.id, y.name, y.pic))
+			const picFile = y.pic ? picPath+y.pic : picPath+'placeholder.jpg';
+			this.users.data.push(new User(y.id, y.name, picFile))
 		})
 		this.users.loaded = true;
 	})
@@ -44,6 +48,7 @@ appState.selectUser = function(id) {
 }
 appState.advanceStage = function(nextStage) {
 	this.stage = nextStage;
+	window.scrollTo(0, 0);
 }
 
 @observer class FeedbackInput extends Component {
@@ -59,10 +64,7 @@ appState.advanceStage = function(nextStage) {
 							<label for="icon_prefix2">comment</label>
 						</div>
 					</div>
-
-
 				</form>
-
 			</div>
 		)
 	}
@@ -91,32 +93,33 @@ appState.advanceStage = function(nextStage) {
 
 @observer class App extends Component {
 	advanceStage = (x) => {
-		appState.advanceStage(x)
+		appState.advanceStage(x);
 	}
 	selectItem = (x) =>{
 		appState.selectUser(x);
 	}
 	componentWillMount(){
-		appState.getAllUsers();
+		const pathName = window.location.pathname
+		if ((pathName === '/ivey') || (pathName === '/queens') || (pathName === '/workshop')) {
+			appState.getAllUsers(pathName);
+		}
 	}
 
 	submitForm = () => {
+		const pathName = window.location.pathname.replace('/','')
 		const selectedUsers = appState.users.data.filter(x=> x.selected === true);
 		const payload = selectedUsers.map(x=>{
 			return {name: x.name, id: x.id, comment: x.comment}
 		})
-		console.log(payload)
-
-		fetch('http://localhost:5011/dd', {
+		fetch(serverLink+'/feedback', {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'collection': 'ivey',
+				'collection': pathName,
 			},
 			body: JSON.stringify(payload)
 		}).then((x)=>console.log('good',x)).catch((x)=>console.log('bad',x))
-
 		this.advanceStage('done');
 	}
 
@@ -134,7 +137,7 @@ appState.advanceStage = function(nextStage) {
 								</div>
 								<div className={x.selected ? 'user-selected' : 'user-notselected'}>
 									<div className="card-content">
-										<p className="flow-text">{x.name}</p>
+										<p className="h5">{x.name}</p>
 									</div>
 								</div>
 							</div>
@@ -146,7 +149,6 @@ appState.advanceStage = function(nextStage) {
 	)}
 
 	selectedUsersFeedback() {
-		// const selectedUsers = (appState.users.data.filter(x=> {return x.selected === true}))
 		return (
 			<div className="row">
 			{appState.users.data.map(x => {
@@ -165,7 +167,6 @@ appState.advanceStage = function(nextStage) {
 								</div>
 							</div>
 						</div>
-
 					)
 				}
 			})}
