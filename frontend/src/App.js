@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
+import fetch from 'isomorphic-fetch'
 import './App.css';
 
 const testData = [
@@ -105,6 +106,17 @@ appState.advanceStage = function(nextStage) {
 			return {name: x.name, id: x.id, comment: x.comment}
 		})
 		console.log(payload)
+
+		fetch('http://localhost:5011/dd', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'collection': 'ivey',
+			},
+			body: JSON.stringify(payload)
+		}).then((x)=>console.log('good',x)).catch((x)=>console.log('bad',x))
+
 		this.advanceStage('done');
 	}
 
