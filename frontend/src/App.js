@@ -133,7 +133,9 @@ appState.advanceStage = function(nextStage) {
 							<div className="card">
 								<div className="card-image">
 									<img src={x.pic} />
-									<span className="btn-floating halfway-fab waves-effect waves-light red"><i className="material-icons">add</i></span>
+									<span className="btn-floating halfway-fab waves-effect waves-light red">
+										<i className="material-icons">{x.selected ? 'done' : 'add'}</i>	
+									</span>
 								</div>
 								<div className={x.selected ? 'user-selected' : 'user-notselected'}>
 									<div className="card-content">

@@ -27,7 +27,7 @@ var server = new Server('localhost', 27017, {auto_reconnect: true});
 var emptyObject =[{}];
 var portListen = 5011;
 var rootApi = 'feedback'
-var dbName = 'distinction17'
+var dbName = 'dd17'
 
 app.get('/queens', queens);
 app.get('/ivey', ivey);
