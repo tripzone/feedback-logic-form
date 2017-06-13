@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<html>
+	<head></head>
+	<body>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="./papaparse.min.js"></script>
+		<script>
+		var csvfile = './kickoffqueens.csv';
+
+		 $.get(csvfile, function (data) {
+				 resulting = Papa.parse(data, {
+					 header: true,
+					 complete: function(results) {
+						 console.log('read the file');
+						 startSending(results);
+						//  sendMail(results.data[0].firstname, results.data[0].email)
+					 }
+				});
+		 });
+
+		function startSending(data){
+			console.log(data)
+		}
+
+		function createLiElement(message){
+			var li = document.createElement("li");
+			var node = document.createTextNode(message);
+			li.appendChild(node);
+			var element = document.getElementById("results");
+			element.appendChild(li);
+		}
+
+		var x = 0;
+		function sendNext() {
+			var name = resulting.data[x].firstname;
+			var email = resulting.data[x].email;
+			console.log(resulting.data[x])
+			if (!!email) {
+				sendMail(name, email)
+				createLiElement("sent to: "+ name)
+				x++;
+			} else {
+				createLiElement("---END---")
+			}
+
+		}
+
+		function sendMail(name, email)
+		{
+				var subject = 'Deloitte Distinction Kick-off';
+				body = ("Hello "+name+"\r\n\r\nWe have reviewed your resume and believe you may be a good fit for our Deloitte Distinction Recruitment Program. We highly encourage you to attend the kick-off session on June 20th, where we’ll talk about how you can apply to this year’s edition of the program. We’ll be holding workshops for the successful applicants, which will help us get to know each other and will allow us to put selected candidates in the accelerated position for interviews.\r\n\r\nYour school should have already forwarded you the the registration information, if you have any questions please contact your school’s career management or reach out to kzahir@deloitte.ca.\r\n\r\nBest,\r\nDeloitte Disitintion Team")
+
+				document.location.href = "mailto:"+email+"?subject="
+						+ encodeURIComponent(subject)
+						+ "&body=" + encodeURIComponent(body);
+		}
+
+		// sendMail()
+	</script>
+		<button id="button" onclick={sendNext()}>NEXT</button>
+		<div id="results"></div>
+	</body>
+</html>

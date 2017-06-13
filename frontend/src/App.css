@@ -29,16 +29,60 @@
 .user-selected {
 	background-color: CadetBlue ;
 }
-.card-content {
+.card-content-all-users {
 	height: 80px;
 }
-.card {
+.card-all-users {
 	cursor: pointer;
 }
 
-.card-image img:hover {
-		opacity: 0.8;
-		filter: alpha(opacity=100); /* For IE8 and earlier */
+.card-image-feedback{
+	width: 300px;
+}
+
+.card-image-all-users img:hover {
+	opacity: 0.8;
+	filter: alpha(opacity=100); /* For IE8 and earlier */
+}
+
+.user-registry {
+	margin-top: 20%;
+}
+
+.feedback-rating {
+	display: flex;
+	align-items: center;
+}
+
+.feedback-rating-icons{
+	display: flex;
+}
+
+.feedback-rating-icon {
+	margin: 10px;
+	white-space:nowrap;
+	text-align: center;
+}
+
+.user-feedback {
+	align-items: center;
+}
+
+.material-icons-feedback {
+	font-size: 3em;
+
+	cursor: pointer;
+}
+
+.feedback-rating-icon{
+		color: grey;
+}
+.feedback-rating-icon  :hover{
+	color: lightgreen;
+}
+
+.active-icon {
+	color: green	!important;
 }
 
 @keyframes App-logo-spin {
