@@ -1,30 +1,6 @@
-/*.user-select-canvas {
-	display: flex;
-	flex-wrap: wrap;
-}*/
-
-/*.user-feedback-canvas {
-
+.deloittelogo{
+	width:50%;
 }
-
-.user-select img, .user-feedback img {
-	width: 300px;
-}
-.user-select, .user-feedback{
-	width: 300px;
-	margin: 5px;
-	padding: 5px;
-	text-align: center;
-}
-
-.user-feedback-lower {
-	display: flex;
-	align-items: center;
-}
-
-.user-feedback-lower-input {
-
-}*/
 
 .user-selected {
 	background-color: CadetBlue ;
@@ -46,7 +22,7 @@
 }
 
 .user-registry {
-	margin-top: 20%;
+	margin-top: 20px;
 }
 
 .feedback-rating {
@@ -82,8 +58,26 @@
 }
 
 .active-icon {
-	color: green	!important;
+	color: green;
 }
+
+.validation-fail {
+	color: lightCoral;
+}
+
+.dont-show {
+	display: none;
+}
+
+.show {
+	color: red;
+	margin: 5px;
+}
+
+.dropdown-invalid {
+	border-bottom: 2px solid red;;
+}
+
 
 @keyframes App-logo-spin {
 	from { transform: rotate(0deg); }

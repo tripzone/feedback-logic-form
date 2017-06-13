@@ -35,7 +35,8 @@ const appState = observable({
 	stage: 'user',
 	userName: '',
 	userEmail: '',
-	userPosition: ''
+	userPosition: '',
+	submitValid: true,
 })
 appState.getAllUsers = function(school) {
 	fetchUsers(school).then(x=> {
@@ -53,26 +54,39 @@ appState.selectUser = function(id) {
 appState.advanceStage = function(nextStage) {
 	this.stage = nextStage;
 	window.scrollTo(0, 0);
+	appState.submitValid = true;
 }
 
 class UserInput extends Component {
 	render() {
+		var usernameClassName = classNames({
+			'validate': true,
+			'invalid': appState.userName === '' && !appState.submitValid,
+		})
+		var emailClassName = classNames({
+			'validate': true,
+			'invalid': appState.userEmail === '' && !appState.submitValid,
+		})
+		var positionClassName = classNames({
+			'browser-default': true,
+			'dropdown-invalid': appState.userPosition === '' && !appState.submitValid,
+		})
 		return(
 			<div>
 				<div className="row">
-					<div className="input-field">
-						<input id="name" type="text" className="validate" onChange={this.onChangeName}/>
+					<div className="input-field ">
+						<input id="name" type="text" className={usernameClassName} onChange={this.onChangeName}/>
 						<label for="name">Name</label>
 					</div>
 				</div>
 				<div className="row">
 					<div className="input-field">
-						<input id="email" type="email" className="validate" onChange={this.onChangeEmail}/>
+						<input id="email" type="email" className={emailClassName} onChange={this.onChangeEmail}/>
 						<label for="email">Email</label>
 					</div>
 				</div>
 				<div className="row">
-					<select className="browser-default" onChange={this.onChangePosition}>
+					<select className={positionClassName} onChange={this.onChangePosition}>
 						<option value="" disabled selected>Position</option>
 						<option value="BTA">BTA</option>
 						<option value="C">C</option>
@@ -122,20 +136,23 @@ class FeedbackInput extends Component {
 		var noIconStyle = classNames({
 			'feedback-rating-icon': true,
 			'active-icon': this.props.user.rating === 'no',
+			'validation-fail': this.props.user.rating === '' && !appState.submitValid,
 		});
 		var sosoIconStyle = classNames({
 			'feedback-rating-icon': true,
 			'active-icon': this.props.user.rating === 'soso',
+			'validation-fail': this.props.user.rating === '' && !appState.submitValid,
 		});
 		var yesIconStyle = classNames({
 			'feedback-rating-icon': true,
 			'active-icon': this.props.user.rating === 'yes',
+			'validation-fail': this.props.user.rating === '' && !appState.submitValid,
 		});
 		var greatIconStyle = classNames({
 			'feedback-rating-icon': true,
 			'active-icon': this.props.user.rating === 'great',
+			'validation-fail': this.props.user.rating === '' && !appState.submitValid,
 		});
-		console.log('noIconStyle');
 		return(
 			<div>
 				<div className="feedback-rating">
@@ -163,7 +180,7 @@ class FeedbackInput extends Component {
 
 		)
 	}
-	@action onChange = (x) => {console.log('here is', x); this.props.user.rating = x}
+	@action onChange = (x) => {this.props.user.rating = x}
 }
 
 @observer class App extends Component {
@@ -182,12 +199,9 @@ class FeedbackInput extends Component {
 		}
 	}
 
-	submitForm = () => {
+	submitForm = (payload) => {
 		const pathName = window.location.pathname.replace('/','')
-		const selectedUsers = appState.fields.data.filter(x=> x.selected === true);
-		const payload = selectedUsers.map(x=>{
-			return {name: x.name, id: x.id, comment: x.comment, rating: x.rating, userName: appState.userName, userEmail:appState.userEmail, userPosition: appState.userPosition}
-		})
+
 		fetch(serverLink+'/feedback', {
 			method: 'POST',
 			headers: {
@@ -198,6 +212,24 @@ class FeedbackInput extends Component {
 			body: JSON.stringify(payload)
 		}).then((x)=>console.log('good',x)).catch((x)=>console.log('bad',x))
 		this.advanceStage('done');
+	}
+
+	validateAndSelect = () => {
+		if (appState.userName === '' || appState.userEmail === '' || appState.userPosition ==='') {
+			appState.submitValid = false
+		} else {
+			this.advanceStage('selection')
+		}
+	}
+
+	validateAndSubmit = () => {
+		const selectedUsers = appState.fields.data.filter(x=> x.selected === true);
+		let validated = true;
+		const payload = selectedUsers.map(x=>{
+			if (x.rating === '') {validated = false}
+			return {name: x.name, id: x.id, comment: x.comment, rating: x.rating, userName: appState.userName, userEmail:appState.userEmail, userPosition: appState.userPosition}
+		})
+		if (validated) {this.submitForm(payload)} else {appState.submitValid = false};
 	}
 
 	allUsersDisplay() {
@@ -230,7 +262,6 @@ class FeedbackInput extends Component {
 	selectedUsersFeedback() {
 		return (
 			<div className="row">
-			{console.log('zong',appState.userName, appState.userEmail, appState.userPosition)}
 			{appState.fields.data.map(x => {
 				if (x.selected) {
 					return (
@@ -255,17 +286,30 @@ class FeedbackInput extends Component {
 		)
 	}
 
+
 	render() {
+		var showOrNot = classNames({
+			'flow-text': true,
+			'show': !appState.submitValid,
+			'dont-show': appState.submitValid,
+		})
 		if (appState.stage === 'user'){
 			return (
-				<div className="row">
-					<div className="user-registry col s6 offset-s3">
-						<UserInput />
-						<div className="row center">
-							<button className='waves-effect waves-light btn-large' onClick={() => this.advanceStage('selection')}>Start</button>
+				<div>
+					<div className="center">
+						<img className="deloittelogo" src="deloittelogo.png"></img>
+					</div>
+					<div className="row">
+						<div className="user-registry col s6 offset-s3">
+							<UserInput />
+							<div className="row center">
+								<div className={showOrNot}>missing required fields</div>
+								<button className='waves-effect waves-light btn-large' onClick={() => this.validateAndSelect()}>Start</button>
+							</div>
 						</div>
 					</div>
 				</div>
+
 			);
 		} else if (appState.stage === 'selection') {
 			return (
@@ -278,8 +322,7 @@ class FeedbackInput extends Component {
 					</div>
 					<div className="row center">
 						<button className='waves-effect waves-light btn-large' onClick={() => this.advanceStage('feedback')}>Select</button>
-					</div>
-				</div>
+					</div>				</div>
 			);
 		} else if (appState.stage === 'feedback') {
 			return(
@@ -290,23 +333,22 @@ class FeedbackInput extends Component {
 						}
 					</div>
 					<div className="row center">
-						<button className='waves-effect waves-light btn-large' onClick={() => this.submitForm()}>Done</button>
+						<div className={showOrNot}>missing required fields</div>
+						<button className='waves-effect waves-light btn-large' onClick={() => this.validateAndSubmit()}>Done</button>
 					</div>
 				</div>
 			)
 		} else if (appState.stage === 'done') {
 			return(
 				<div>
-					<p className="flow-text center selection-title">Thank you for your feedback.</p>
-				</div>
+					<p className="flow-text center selection-title">Thank you for your feedback.</p>				</div>
 			)
 		} else if (appState.stage === 'invalidLink') {
 			return(
 				<div>
 					<div className="flow-text center">
 						Invalid Request
-					</div>
-				</div>
+					</div>				</div>
 
 			)
 		}
