@@ -5,7 +5,7 @@ var Papa = require('babyparse');
 var fs = require('fs');
 var app = express();
 app.use(bodyParser.json())
-app.use("/public", express.static('/Users/kzahir/dev/deloitte/feedback-form/public'));
+app.use("/public", express.static('../public'));
 
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
