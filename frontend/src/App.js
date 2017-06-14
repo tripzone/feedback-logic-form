@@ -257,7 +257,7 @@ class FeedbackInput extends Component {
 				</div>
 			)
 		})}
-		{appState.fields.data.length === 0 ? <div className="center show">Server is down, please contact kzahir@deloitte.ca or try again later</div> : null}
+		{appState.fields.data.length === 0 ? <div className="center show">Server is down, please contact kzahir@deloitte.ca or try again later.</div> : null}
 		</div>
 	)}
 
