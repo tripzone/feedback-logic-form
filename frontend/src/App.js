@@ -5,7 +5,7 @@ import fetch from 'isomorphic-fetch';
 import classNames from 'classnames';
 import './App.css';
 
-const serverLink = 'http://52.206.147.144:443';
+const serverLink = 'http://52.55.4.4:443';
 const picPath = serverLink+'/public/'
 
 const fetchUsers = (apiLink) => {
