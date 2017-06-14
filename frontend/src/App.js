@@ -112,6 +112,7 @@ class UserInput extends Component {
 	}
 }
 
+
 class FeedbackInput extends Component {
 	render() {
 		return(
