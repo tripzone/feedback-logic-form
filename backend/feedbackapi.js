@@ -9,7 +9,8 @@ var app = express();
 app.use(bodyParser.json())
 app.use("/public", express.static('/home/ubuntu/deloitte/feedback/public'));
 app.use("/iveypoll", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
-app.use("/queenspoll", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
+app.use("/queenpoll", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
+app.use("/static", express.static('/home/ubuntu/deloitte/feedback/frontend/build/static'));
 
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
