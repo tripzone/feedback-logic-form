@@ -8,8 +8,8 @@ var https = require('https');
 var app = express();
 app.use(bodyParser.json())
 app.use("/public", express.static('/home/ubuntu/deloitte/feedback/public'));
-app.use("/iveypoll", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
-app.use("/queenpoll", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
+app.use("/ivey", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
+app.use("/queens", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
 app.use("/static", express.static('/home/ubuntu/deloitte/feedback/frontend/build/static'));
 
 app.use(function(req, res, next) {
@@ -34,8 +34,8 @@ var portListen = 443;
 var rootApi = 'feedback'
 var dbName = 'dd17'
 
-app.get('/queens', queens);
-app.get('/ivey', ivey);
+app.get('/queensdata', queens);
+app.get('/iveydata', ivey);
 app.get('/'+rootApi, findAll);
 app.post('/'+rootApi , adddata);
 app.delete('/'+rootApi+'/:id', deletedata);

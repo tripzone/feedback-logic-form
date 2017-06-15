@@ -198,7 +198,7 @@ class FeedbackInput extends Component {
 		if (hostname.includes('ivey')) { school = 'ivey'}
 		else if (hostname.includes('queens')) { school = 'queens'}
 		if (school !== '') {
-			appState.getAllUsers('/'+school);
+			appState.getAllUsers('/'+school+'data');
 		} else {
 			this.advanceStage('invalidLink');
 		}
