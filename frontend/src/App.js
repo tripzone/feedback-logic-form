@@ -193,6 +193,7 @@ class FeedbackInput extends Component {
 	}
 	componentWillMount(){
 		const pathName = window.location.pathname
+		console.log('pathname:', pathName);
 		if ((pathName === '/ivey') || (pathName === '/queens') || (pathName === '/workshop')) {
 			appState.getAllUsers(pathName);
 		} else {
