@@ -357,6 +357,7 @@ class FeedbackInput extends Component {
 				<div>
 					<div className="flow-text center">
 						Invalid Request
+						{window.location.pathname}
 					</div>
 				</div>
 
