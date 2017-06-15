@@ -192,24 +192,31 @@ class FeedbackInput extends Component {
 		appState.selectUser(x);
 	}
 	componentWillMount(){
-		const pathName = window.location.pathname
-		console.log('pathname:', pathName);
-		if ((pathName === '/ivey') || (pathName === '/queens') || (pathName === '/workshop')) {
-			appState.getAllUsers(pathName);
+		const hostname = window.location.href
+		console.log('pathname:', hostname);
+		let school = '';
+		if (hostname.includes('ivey')) { school = 'ivey'}
+		else if (hostname.includes('queens')) { school = 'queens'}
+		if (school !== '') {
+			appState.getAllUsers('/'+school);
 		} else {
 			this.advanceStage('invalidLink');
 		}
 	}
 
 	submitForm = (payload) => {
-		const pathName = window.location.pathname.replace('/','')
+		const hostname = window.location.href;
+
+		let school = '';
+		if (hostname.includes('ivey')) { school = 'ivey'}
+		else if (hostname.includes('queens')) { school = 'queens'}
 
 		fetch(serverLink+'/feedback', {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'collection': pathName,
+				'collection': school,
 			},
 			body: JSON.stringify(payload)
 		}).then((x)=>console.log('good',x)).catch((x)=>console.log('bad',x))
@@ -357,7 +364,6 @@ class FeedbackInput extends Component {
 				<div>
 					<div className="flow-text center">
 						Invalid Request
-						{window.location.pathname}
 					</div>
 				</div>
 
