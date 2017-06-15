@@ -7,10 +7,10 @@ var https = require('https');
 
 var app = express();
 app.use(bodyParser.json())
-app.use("/public", express.static('/home/ubuntu/deloitte/feedback/public'));
-app.use("/ivey", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
-app.use("/queens", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
-app.use("/static", express.static('/home/ubuntu/deloitte/feedback/frontend/build/static'));
+app.use("/public", express.static(path.join(__dirname, '/../public'));
+app.use("/ivey", express.static(path.join(__dirname, '/../frontend/build'));
+app.use("/queens", express.static(__dirname, '/../frontend/build'));
+app.use("/static", express.static(__dirname, '/../frontend/build/static'));
 
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
