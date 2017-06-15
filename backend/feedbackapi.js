@@ -8,6 +8,8 @@ var https = require('https');
 var app = express();
 app.use(bodyParser.json())
 app.use("/public", express.static('/home/ubuntu/deloitte/feedback/public'));
+app.use("/iveypoll", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
+app.use("/queenspoll", express.static('/home/ubuntu/deloitte/feedback/frontend/build'));
 
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -39,17 +41,13 @@ app.delete('/'+rootApi+'/:id', deletedata);
 
 // *************** CONFIG *******************
 
-// var pkey = fs.readFileSync('key.pem', 'utf8');
+// var options = {
+//    key: fs.readFileSync('./privkey.pem', 'utf8'),
+//    cert: fs.readFileSync('./fullchain.pem', 'utf8')
+// };
+// https.createServer(options, app).listen(443);
 
-var options = {
-   key: fs.readFileSync('./privkey.pem', 'utf8'),
-   cert: fs.readFileSync('./fullchain.pem', 'utf8')
-};
-
-//console.log('certtt', options);
-https.createServer(options, app).listen(443);
-
-//app.listen(portListen);
+app.listen(portListen);
 db = new Db(dbName, server);
 db.open();
 
