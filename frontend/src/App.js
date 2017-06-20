@@ -34,7 +34,6 @@ const appState = observable({
 	}),
 	stage: 'user',
 	userName: '',
-	userEmail: '',
 	userPosition: '',
 	submitValid: true,
 })
@@ -63,10 +62,6 @@ class UserInput extends Component {
 			'validate': true,
 			'invalid': appState.userName === '' && !appState.submitValid,
 		})
-		var emailClassName = classNames({
-			'validate': true,
-			'invalid': appState.userEmail === '' && !appState.submitValid,
-		})
 		var positionClassName = classNames({
 			'browser-default': true,
 			'dropdown-invalid': appState.userPosition === '' && !appState.submitValid,
@@ -76,13 +71,7 @@ class UserInput extends Component {
 				<div className="row">
 					<div className="input-field ">
 						<input id="name" type="text" className={usernameClassName} onChange={this.onChangeName}/>
-						<label for="name">Name</label>
-					</div>
-				</div>
-				<div className="row">
-					<div className="input-field">
-						<input id="email" type="email" className={emailClassName} onChange={this.onChangeEmail}/>
-						<label for="email">Email</label>
+						<label for="name">Please enter your Name</label>
 					</div>
 				</div>
 				<div className="row">
@@ -102,10 +91,6 @@ class UserInput extends Component {
 	}
 	@action onChangeName = (e) => {
 		appState.userName = e.target.value;
-	}
-	@action onChangeEmail = (e) => {
-		appState.userEmail =  e.target.value;
-
 	}
 	@action onChangePosition = (e) => {
 		appState.userPosition =  e.target.value;
@@ -224,7 +209,7 @@ class FeedbackInput extends Component {
 	}
 
 	validateAndSelect = () => {
-		if (appState.userName === '' || appState.userEmail === '' || appState.userPosition ==='') {
+		if (appState.userName === '' || appState.userPosition ==='') {
 			appState.submitValid = false
 		} else {
 			this.advanceStage('selection')
@@ -234,9 +219,10 @@ class FeedbackInput extends Component {
 	validateAndSubmit = () => {
 		const selectedUsers = appState.fields.data.filter(x=> x.selected === true);
 		let validated = true;
+		const date = new Date()
 		const payload = selectedUsers.map(x=>{
 			if (x.rating === '') {validated = false}
-			return {name: x.name, id: x.id, comment: x.comment, rating: x.rating, userName: appState.userName, userEmail:appState.userEmail, userPosition: appState.userPosition}
+			return {name: x.name, id: x.id, comment: x.comment, rating: x.rating, userName: appState.userName, userPosition: appState.userPosition, date: date}
 		})
 		if (validated) {this.submitForm(payload)} else {appState.submitValid = false};
 	}
