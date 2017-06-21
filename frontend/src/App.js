@@ -313,7 +313,7 @@ class FeedbackInput extends Component {
 		} else if (appState.stage === 'selection') {
 			return (
 				<div>
-					<p className="flow-text center selection-title">Please select the students you've had interactions with.</p>
+					<p className="flow-text center selection-title">Please select the students you interacted with.</p>
 					<div className='user-select-canvas'>
 						{
 							!appState.fields.loaded ? 'loading...' : this.allUsersDisplay()
