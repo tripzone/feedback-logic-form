@@ -142,7 +142,7 @@ class FeedbackInput extends Component {
 		return(
 			<div>
 				<div className="feedback-rating">
-					<div className="flow-text col s12 m3"><h6>Good fit for Deloitte</h6></div>
+					<div className="flow-text col s12 m3"><h6>Good fit for Deloitte?</h6></div>
 					<div className="feedback-rating-icons col s12 m9">
 						<div className={noIconStyle} onClick={()=> this.onChange('no')}>
 							No
