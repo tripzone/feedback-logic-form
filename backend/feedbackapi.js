@@ -9,9 +9,9 @@ var path = require('path');
 var app = express();
 app.use(bodyParser.json())
 app.use("/public", express.static(path.join(__dirname, '/../public')));
-app.use("/ivey", express.static(path.join(__dirname, '/../frontend/build')));
-app.use("/queens", express.static(path.join(__dirname, '/../frontend/build')));
-app.use("/static", express.static(path.join(__dirname, '/../frontend/build/static')));
+app.use("/", express.static(path.join(__dirname, '/../frontend/build')));
+// app.use("/queens", express.static(path.join(__dirname, '/../frontend/build')));
+// app.use("/static", express.static(path.join(__dirname, '/../frontend/build/static')));
 
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");

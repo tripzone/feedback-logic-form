@@ -21,6 +21,10 @@
 	filter: alpha(opacity=100); /* For IE8 and earlier */
 }
 
+.results-image img{
+	width: 300px;
+}
+
 .user-registry {
 	margin-top: 20px;
 }
@@ -55,6 +59,19 @@
 }
 .feedback-rating-icon  :hover{
 	color: lightgreen;
+}
+
+.results-rating-icon {
+	margin: 10px;
+	font-size: 0.5em;
+	color: dimgrey;
+}
+
+.results-comments{
+	font-size: 0.65em;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top: 1px dotted darkgrey;
 }
 
 .active-icon {

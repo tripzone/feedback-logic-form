@@ -4,9 +4,7 @@ import {observer} from 'mobx-react';
 import fetch from 'isomorphic-fetch';
 import classNames from 'classnames';
 import './App.css';
-
-const serverLink = 'http://52.55.4.4:443';
-const picPath = serverLink+'/public/'
+import { appState, User, serverLink, picPath } from './state.js'
 
 const fetchUsers = (apiLink) => {
 	return new Promise ((resolve, reject) => {
@@ -17,26 +15,6 @@ const fetchUsers = (apiLink) => {
 	});
 }
 
-class User {
-	@observable selected = false;
-	@observable comment = '';
-	@observable rating = '';
-	constructor(id, name, pic) {
-		this.id = id;
-		this.name = name;
-		this.pic = pic;
-	}
-}
-const appState = observable({
-	fields: observable({
-		loaded: false,
-		data: [],
-	}),
-	stage: 'user',
-	userName: '',
-	userPosition: '',
-	submitValid: true,
-})
 appState.getAllUsers = function(school) {
 	fetchUsers(school).then(x=> {
 		x.forEach(y => {
@@ -184,8 +162,6 @@ class FeedbackInput extends Component {
 		else if (hostname.includes('queens')) { school = 'queens'}
 		if (school !== '') {
 			appState.getAllUsers('/'+school+'data');
-		} else {
-			this.advanceStage('invalidLink');
 		}
 	}
 
@@ -345,17 +321,7 @@ class FeedbackInput extends Component {
 				<div>
 					<p className="flow-text center selection-title">Thank you for your feedback.</p>				</div>
 			)
-		} else if (appState.stage === 'invalidLink') {
-			return(
-				<div>
-					<div className="flow-text center">
-						Invalid Request
-					</div>
-				</div>
-
-			)
 		}
-
 	}
 }
 
