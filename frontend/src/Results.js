@@ -1,45 +1,24 @@
 import React, { Component } from 'react';
 import {observer} from 'mobx-react';
 
-import { ResultState, StudentData, Rating, serverLink, picPath } from './state';
+import { ResultState, picPath } from './state';
 
-const fetchData = (school) => {
-	var myHeaders = new Headers();
-	myHeaders.append("collection", school);
-	return new Promise ((resolve, reject) => {
-		fetch(serverLink+'/feedback', {
-			method: 'GET',
-			headers: myHeaders
-		}).then((x)=>resolve(x.json()))
-			.catch((x)=>reject(null))
-	});
-}
-ResultState.getAllUsers = function (school) {
-	fetchData(school).then(x=>{
-		x.forEach(
-			y=> {
-				if (!this.students[y.name]) {
-					console.log('didnt find the sucker', y.name)
-					this.students[y.name] = new StudentData(y.name, y.id)
-				}
-				if (y.comment !=="") {
-					this.students[y.name].comments.push({comment: y.comment, name: y.userName})
-				}
-				this.students[y.name].ratings[y.rating] += 1
-			}
-		)
-		this.loaded = true;
-	})
+
+
+export function loadResults (school) {
+
 }
 
 
-@observer class StudentFeedback extends Component {
+
+@observer export class StudentFeedback extends Component {
 	render() {
 		return (
 			<div className='user-feedback'>
 				<div className="card horizontal">
 						<div className="results-image">
-							<img src={picPath+'/pics-'+this.props.school+'/'+this.props.student.id+'.jpg'} />
+							<img
+								src={picPath+'pics-'+this.props.school+'/'+this.props.student.id+'.jpg'} />
 						</div>
 						<div className="card-stacked">
 							<div className="card-content">
@@ -80,26 +59,22 @@ ResultState.getAllUsers = function (school) {
 	}
 }
 
-@observer class Results extends Component {
+@observer export class Results extends Component {
 	componentDidMount(){
-		// ResultState.getAllUsers('ivey');
-		ResultState.getAllUsers('queens');
+		ResultState.getAllUsers(this.props.school);
 	}
 
 	render() {
 		const { students } = ResultState;
 		return (
 			<div className="flow-text ">
-				Results
 				{Object.keys(students).map((x=> {
 					return (
 						<div>
-							<StudentFeedback student={students[x]} school={'queens'}/>
-
+							<StudentFeedback student={students[x]} school={this.props.school}/>
 						</div>
 					)}
 				))}
-				{console.log('yako', ResultState.students)}
 				{ResultState.loaded}
 			</div>
 		);
