@@ -44,17 +44,20 @@ export const ResultState = observable({
 })
 ResultState.getAllUsers = function (school) {
 	fetchData(school).then(x=>{
-		x.forEach(
-			y=> {
-				if (!this.students[y.name]) {
-					this.students[y.name] = new StudentData(y.name, y.id)
+		if(!!x) {
+			Object.keys(x).forEach(
+				y=> {
+					if (!this.students[x[y].name]) {
+						this.students[x[y].name] = new StudentData(x[y].name, x[y].id)
+					}
+					if (y.comment !=="") {
+						this.students[x[y].name].comments.push({comment: x[y].comment, name: x[y].userName})
+					}
+					this.students[x[y].name].ratings[x[y].rating] += 1
 				}
-				if (y.comment !=="") {
-					this.students[y.name].comments.push({comment: y.comment, name: y.userName})
-				}
-				this.students[y.name].ratings[y.rating] += 1
-			}
-		)
+			)
+		}
+
 		this.loaded = true;
 	})
 }

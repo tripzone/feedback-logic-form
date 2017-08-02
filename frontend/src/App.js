@@ -170,6 +170,13 @@ class FeedbackInput extends Component {
 	submitForm = (payload) => {
 		const hostname = window.location.href;
 
+		const time = new Date().getTime();
+		let data = {};
+		payload.forEach((x,i)=>{
+			data[time+i] =x;
+		})
+
+
 		let school = '';
 		if (hostname.includes('ivey')) { school = 'ivey'}
 		else if (hostname.includes('queens')) { school = 'queens'}
@@ -183,7 +190,7 @@ class FeedbackInput extends Component {
 				'Content-Type': 'application/json',
 				'collection': school,
 			},
-			body: JSON.stringify(payload)
+			body: JSON.stringify(data)
 		}).then((x)=>console.log('good',x)).catch((x)=>console.log('bad',x))
 		this.advanceStage('done');
 	}
