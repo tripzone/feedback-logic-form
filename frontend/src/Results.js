@@ -46,7 +46,9 @@ export function loadResults (school) {
 										</div>
 										<div>
 											{this.props.student.comments.map((x)=>{
-												return (<div className="results-comments"><strong>{x.name} :</strong> {x.comment}</div>)
+												return (
+													x.comment ? <div className="results-comments"><strong>{x.name} :</strong> {x.comment}</div> : null 
+												)
 											})}
 										</div>
 									</div>
