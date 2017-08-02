@@ -160,6 +160,8 @@ class FeedbackInput extends Component {
 		let school = '';
 		if (hostname.includes('ivey')) { school = 'ivey'}
 		else if (hostname.includes('queens')) { school = 'queens'}
+		else if (hostname.includes('distinction')) { school = 'distinction'}
+
 		if (school !== '') {
 			appState.getAllUsers('/'+school+'data');
 		}
@@ -171,6 +173,8 @@ class FeedbackInput extends Component {
 		let school = '';
 		if (hostname.includes('ivey')) { school = 'ivey'}
 		else if (hostname.includes('queens')) { school = 'queens'}
+		else if (hostname.includes('distinction')) { school = 'distinction'}
+
 
 		fetch(serverLink+'/feedback', {
 			method: 'POST',

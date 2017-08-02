@@ -29,7 +29,9 @@ var Server = mongo.Server,
 
 // HEADERS: db, collectioin, id
 
-var server = new Server('localhost', 27017, {auto_reconnect: true});
+// var server = new Server('http://52.55.4.4', 27017, {auto_reconnect: true});
+var server = new Server('http://localhost', 27017, {auto_reconnect: true});
+
 var emptyObject =[{}];
 var portListen = 443;
 var rootApi = 'feedback'
@@ -37,6 +39,7 @@ var dbName = 'dd17'
 
 app.get('/queensdata', queens);
 app.get('/iveydata', ivey);
+app.get('/distinctiondata',distinction)
 app.get('/'+rootApi, findAll);
 app.post('/'+rootApi , adddata);
 app.delete('/'+rootApi+'/:id', deletedata);
@@ -78,9 +81,9 @@ function adddata (req, res) {
 				var data = req.body;
 				console.log('Adding data: ' + JSON.stringify(data));
 				db.collection(collectionName, function(err, collection) {
-						collection.insert(data, {safe:true}, function(err, result) {
+						collection.insert(data, function(err, result) {
 								if (err) {
-										res.send({'error':'An error has occurred'});
+										res.send({'error':'An error has occurred', err});
 								} else {
 										console.log('Success: ' + JSON.stringify(result));
 										res.send(result);
@@ -127,6 +130,13 @@ function ivey (req, res) {
 		console.log('getting all ivey names:');
 		var picPath = '/pics-ivey/';
 		payload = readFile('../public/ivey.csv', picPath)
+		res.send(payload);
+};
+
+function distinction (req, res) {
+		console.log('getting all distinction names:');
+		var picPath = '/pics-all/';
+		payload = readFile('../public/distinction.csv', picPath)
 		res.send(payload);
 };
 

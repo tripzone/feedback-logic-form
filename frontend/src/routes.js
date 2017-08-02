@@ -6,6 +6,7 @@ import NotFound from './NotFound';
 import Results from './Results';
 import IveyResults from './resultsivey';
 import QueensResults from './resultsqueen';
+import DistinctionResults from './resultsdistinction'
 
 
 const Routes = (props) => (
@@ -13,9 +14,11 @@ const Routes = (props) => (
 		<Route path="/" component={NotFound} />
 		<Route path="/ivey" component={App} />
 		<Route path="/queens" component={App} />
+		<Route path="/distinction" component={App} />
 		<Route path="/results" component={Results} />
 		<Route path="/iveyresults" component={IveyResults} />
 		<Route path="/queensresults" component={QueensResults} />
+		<Route path="/distinctionresults" component={DistinctionResults} />
 		<Route path="*" component={NotFound} />
 	</Router>
 );
