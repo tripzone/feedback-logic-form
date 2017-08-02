@@ -29,8 +29,8 @@ var Server = mongo.Server,
 
 // HEADERS: db, collectioin, id
 
-// var server = new Server('http://52.55.4.4', 27017, {auto_reconnect: true});
-var server = new Server('http://localhost', 27017, {auto_reconnect: true});
+var server = new Server('http://52.55.4.4', 27017, {auto_reconnect: true});
+// var server = new Server('http://localhost', 27017, {auto_reconnect: true});
 
 var emptyObject =[{}];
 var portListen = 443;
