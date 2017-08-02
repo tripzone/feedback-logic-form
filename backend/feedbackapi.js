@@ -9,9 +9,13 @@ var path = require('path');
 var app = express();
 app.use(bodyParser.json())
 app.use("/public", express.static(path.join(__dirname, '/../public')));
-app.use("/", express.static(path.join(__dirname, '/../frontend/build')));
-// app.use("/queens", express.static(path.join(__dirname, '/../frontend/build')));
-// app.use("/static", express.static(path.join(__dirname, '/../frontend/build/static')));
+app.use("/ivey", express.static(path.join(__dirname, '/../frontend/build')));
+app.use("/queens", express.static(path.join(__dirname, '/../frontend/build')));
+app.use("/distinction", express.static(path.join(__dirname, '/../frontend/build')));
+app.use("/iveyresults", express.static(path.join(__dirname, '/../frontend/build')));
+app.use("/queensresults", express.static(path.join(__dirname, '/../frontend/build')));
+app.use("/distinctionresults", express.static(path.join(__dirname, '/../frontend/build')));
+app.use("/static", express.static(path.join(__dirname, '/../frontend/build/static')));
 
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -42,7 +46,7 @@ app.get('/iveydata', ivey);
 app.get('/distinctiondata',distinction)
 app.get('/'+rootApi, findAll);
 app.post('/'+rootApi , adddata);
-app.delete('/'+rootApi+'/:id', deletedata);
+// app.delete('/'+rootApi+'/:id', deletedata);
 
 // *************** CONFIG *******************
 
@@ -95,29 +99,29 @@ function adddata (req, res) {
 		}
 }
 
-function deletedata (req, res) {
-		collectionName = req.header('collection');
-		password = req.header('password')
-		correctPass = 'dd2017'
-		console.log('connected to collection: ', collectionName);
+// function deletedata (req, res) {
+// 		collectionName = req.header('collection');
+// 		password = req.header('password')
+// 		correctPass = 'dd2017'
+// 		console.log('connected to collection: ', collectionName);
 
-		if (collectionName && password === correctPass) {
-				var id = req.params.id;
-				console.log('Deleting data: ' + id);
-				db.collection(collectionName, function(err, collection) {
-						collection.remove({'_id':new ObjectID(id)}, {safe:true}, function(err, result) {
-								if (err) {
-										res.send({'error':'An error has occurred - ' + err});
-								} else {
-										console.log('' + result + ' document(s) deleted');
-										res.send(result);
-								}
-						});
-				});
-		} else {
-				res.status(300).jsonp({status: 'fail', error: 'wrong db or collection in header'});
-		}
-}
+// 		if (collectionName && password === correctPass) {
+// 				var id = req.params.id;
+// 				console.log('Deleting data: ' + id);
+// 				db.collection(collectionName, function(err, collection) {
+// 						collection.remove({'_id':new ObjectID(id)}, {safe:true}, function(err, result) {
+// 								if (err) {
+// 										res.send({'error':'An error has occurred - ' + err});
+// 								} else {
+// 										console.log('' + result + ' document(s) deleted');
+// 										res.send(result);
+// 								}
+// 						});
+// 				});
+// 		} else {
+// 				res.status(300).jsonp({status: 'fail', error: 'wrong db or collection in header'});
+// 		}
+// }
 
 function queens (req, res) {
 		console.log('getting all queens names:');
