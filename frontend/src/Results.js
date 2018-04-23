@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 import {observer} from 'mobx-react';
-
 import { ResultState, picPath } from './state';
 
-
-
-export function loadResults (school) {
-
-}
-
-
+export function loadResults (school) {}
 
 @observer export class StudentFeedback extends Component {
 	render() {
+
 		return (
 			<div className='user-feedback'>
 				<div className="card horizontal">

@@ -4,6 +4,7 @@
 /frontend/node_modules
 /public
 /backend/node_modules
+*/private
 
 # testing
 /coverage

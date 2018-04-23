@@ -1,7 +1,7 @@
 import { observable } from 'mobx';
 
-export const serverLink = 'http://52.55.4.4:443';
-// export const serverLink = 'http://localhost:443';
+// export const serverLink = 'http://52.55.4.4:443';
+export const serverLink = 'http://localhost:443';
 
 export const picPath = serverLink+'/public/'
 

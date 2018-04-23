@@ -13,13 +13,9 @@ var mongoose = require('mongoose');
 
 app.use(bodyParser.json())
 app.use("/public", express.static(path.join(__dirname, '/../public')));
-app.use("/ivey", express.static(path.join(__dirname, '/../frontend/build')));
-app.use("/queens", express.static(path.join(__dirname, '/../frontend/build')));
-app.use("/distinction", express.static(path.join(__dirname, '/../frontend/build')));
-app.use("/iveyresults", express.static(path.join(__dirname, '/../frontend/build')));
-app.use("/queensresults", express.static(path.join(__dirname, '/../frontend/build')));
-app.use("/distinctionresults", express.static(path.join(__dirname, '/../frontend/build')));
+app.use("/", express.static(path.join(__dirname, '/../frontend/build')));
 app.use("/static", express.static(path.join(__dirname, '/../frontend/build/static')));
+
 
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -28,7 +24,7 @@ app.use(function(req, res, next) {
 });
 
 var secret = "./private/secret.json";
-var fbUrl = "https://distinction-111c1.firebaseio.com/";
+var fbUrl = "https://deloittedistinction-d9cda.firebaseio.com/";
 
 admin.initializeApp({
 	credential: admin.credential.cert(secret),
@@ -62,14 +58,13 @@ var db = admin.database();
 
 var emptyObject =[{}];
 var portListen = 443;
-var rootApi = 'feedback'
 var dbName = 'dd17'
 
 app.get('/queensdata', queens);
 app.get('/iveydata', ivey);
 app.get('/distinctiondata',distinction)
-app.get('/'+rootApi, findAll);
-app.post('/'+rootApi , adddata);
+app.get('/feedback', findAll);
+app.post('/feedback' , adddata);
 // app.delete('/'+rootApi+'/:id', deletedata);
 
 // *************** CONFIG *******************
