@@ -63,8 +63,8 @@ var dbName = 'dd17'
 app.get('/queensdata', queens);
 app.get('/iveydata', ivey);
 app.get('/distinctiondata',distinction)
-app.get('/feedback', findAll);
-app.post('/feedback' , adddata);
+// app.get('/feedback', findAll);
+// app.post('/feedback' , adddata);
 // app.delete('/'+rootApi+'/:id', deletedata);
 
 // *************** CONFIG *******************
@@ -81,68 +81,68 @@ app.listen(portListen);
 
 console.log('Listening on port '+ portListen +'...');
 
-function findAll (req, res) {
-		collectionName = req.header('collection');
-		console.log('connected to collection: ', collectionName);
+// function findAll (req, res) {
+// 		collectionName = req.header('collection');
+// 		console.log('connected to collection: ', collectionName);
 
-		if (collectionName) {
-				// db.collection(collectionName, function(err, collection) {
-				// 		collection.find().toArray(function(err, items) {
-				// 				res.send(items);
-				// 		});
-				// });
-				const ref = db.ref(collectionName);
-				ref.once('value',
-					result => res.status(200).jsonp(result.val()),
-					error => res.status(300).jsonp({status: 'fail', error: 'firebase read failed'})
-				);
-		} else {
-				res.status(300).jsonp({status: 'fail', error: 'wrong db or collection in header'});
-		}
-};
+// 		if (collectionName) {
+// 				// db.collection(collectionName, function(err, collection) {
+// 				// 		collection.find().toArray(function(err, items) {
+// 				// 				res.send(items);
+// 				// 		});
+// 				// });
+// 				const ref = db.ref(collectionName);
+// 				ref.once('value',
+// 					result => res.status(200).jsonp(result.val()),
+// 					error => res.status(300).jsonp({status: 'fail', error: 'firebase read failed'})
+// 				);
+// 		} else {
+// 				res.status(300).jsonp({status: 'fail', error: 'wrong db or collection in header'});
+// 		}
+// };
 
-function adddata (req, res) {
-		collectionName = req.header('collection');
-		console.log('connected to collection: ', collectionName);
+// function adddata (req, res) {
+// 		collectionName = req.header('collection');
+// 		console.log('connected to collection: ', collectionName);
 
-		if (collectionName) {
-				var data = req.body;
-				console.log('Adding data: ' + JSON.stringify(data));
+// 		if (collectionName) {
+// 				var data = req.body;
+// 				console.log('Adding data: ' + JSON.stringify(data));
 
-				// const Model = mongooseModel(collectionName);
-				// Model(data).save((err, result) => {
-				// 	if(err) {
-				// 		res.send({'error':'An error has occurred', err});
-				// 	} else {
-				// 		 res.status(200).jsonp({status: 'success'});
-				// 	}
-				// });
+// 				// const Model = mongooseModel(collectionName);
+// 				// Model(data).save((err, result) => {
+// 				// 	if(err) {
+// 				// 		res.send({'error':'An error has occurred', err});
+// 				// 	} else {
+// 				// 		 res.status(200).jsonp({status: 'success'});
+// 				// 	}
+// 				// });
 
-				// db.collection(collectionName, function(err, collection) {
-				// 		collection.insert(data, {safe:true}, function(err, result) {
-				// 				if (err) {
-				// 						res.send({'error':'An error has occurred', err});
-				// 				} else {
-				// 						console.log('Success: ' + JSON.stringify(result));
-				// 						res.send(result);
-				// 				}
-				// 		});
-				// });
+// 				// db.collection(collectionName, function(err, collection) {
+// 				// 		collection.insert(data, {safe:true}, function(err, result) {
+// 				// 				if (err) {
+// 				// 						res.send({'error':'An error has occurred', err});
+// 				// 				} else {
+// 				// 						console.log('Success: ' + JSON.stringify(result));
+// 				// 						res.send(result);
+// 				// 				}
+// 				// 		});
+// 				// });
 
-				var ref = db.ref(collectionName);
+// 				var ref = db.ref(collectionName);
 
-				ref.update(data,
-					(err) => {
-						if(err) {
-							return res.status(300).jsonp({status: 'fail', error: 'firebase write failed'});
-						} else {
-							return res.status(200).jsonp({status: 'success'});
-						}
-				});
-		} else {
-				return res.status(300).jsonp({status: 'fail', error: 'wrong db or collection in header'});
-		}
-}
+// 				ref.update(data,
+// 					(err) => {
+// 						if(err) {
+// 							return res.status(300).jsonp({status: 'fail', error: 'firebase write failed'});
+// 						} else {
+// 							return res.status(200).jsonp({status: 'success'});
+// 						}
+// 				});
+// 		} else {
+// 				return res.status(300).jsonp({status: 'fail', error: 'wrong db or collection in header'});
+// 		}
+// }
 
 function deletedata (req, res) {
 		collectionName = req.header('collection');

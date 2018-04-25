@@ -1,38 +1,9 @@
 import React, { Component } from 'react';
 import {action} from 'mobx';
 import {observer} from 'mobx-react';
-import fetch from 'isomorphic-fetch';
 import classNames from 'classnames';
 import './App.css';
-import { appState, User, serverLink, picPath } from './state.js'
-
-const fetchUsers = (apiLink) => {
-	return new Promise ((resolve, reject) => {
-		fetch(serverLink+apiLink, {
-			method: 'GET',
-		}).then((x)=>resolve(x.json()))
-			.catch((x)=>reject(null))
-	});
-}
-
-appState.getAllUsers = function(school) {
-	fetchUsers(school).then(x=> {
-		x.forEach(y => {
-			const picFile = y.pic ? picPath+y.pic : picPath+'placeholder.jpg';
-			this.fields.data.push(new User(y.id, y.name, picFile))
-		})
-		this.fields.loaded = true;
-	}).catch(this.fields.loaded = true)
-}
-appState.selectUser = function(id) {
-	const userIndex = this.fields.data.findIndex(q => q.id === id);
-	this.fields.data[userIndex].selected = !this.fields.data[userIndex].selected;
-}
-appState.advanceStage = function(nextStage) {
-	this.stage = nextStage;
-	window.scrollTo(0, 0);
-	appState.submitValid = true;
-}
+import { appState, addData } from './state.js'
 
 class UserInput extends Component {
 	render() {
@@ -74,7 +45,6 @@ class UserInput extends Component {
 		appState.userPosition =  e.target.value;
 	}
 }
-
 
 class FeedbackInput extends Component {
 	render() {
@@ -167,15 +137,7 @@ class FeedbackInput extends Component {
 			data[time+i] =x;
 		})
 
-		fetch(serverLink+'/feedback', {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				'collection': this.props.school,
-			},
-			body: JSON.stringify(data)
-		}).then((x)=>console.log('good',x)).catch((x)=>console.log('bad',x))
+		addData(this.props.school, data)
 		this.advanceStage('done');
 	}
 
